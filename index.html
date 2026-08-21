@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070908">
+  <meta name="description" content="VÊ AÍ! transforma indicadores dispersos em relações úteis para investigações de ameaças.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070908'/%3E%3Cpath d='M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16Z' fill='none' stroke='%23d8ff45' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23d8ff45'/%3E%3C/svg%3E">
+  <title>VÊ AÍ! — Inteligência de ameaças com contexto</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+    :root { --bg:#070908; --ink:#f4f3ee; --muted:#9b9f98; --line:#2a2e29; --acid:#d8ff45; --max:1440px; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; overflow-x:hidden; }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:Inter,system-ui,sans-serif; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    .shell { width:min(calc(100% - 96px),var(--max)); margin:auto; }
+    .rule { height:1px; background:var(--line); }
+    .nav { height:94px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); position:relative; z-index:10; }
+    .brand { display:flex; align-items:center; gap:14px; font:800 34px/1 'Barlow Condensed',sans-serif; letter-spacing:.02em; }
+    .brand-mark { width:44px; height:44px; border:1px solid var(--acid); display:grid; place-items:center; color:var(--acid); }
+    .brand-mark svg { width:26px; }
+    .nav-links { display:flex; align-items:center; gap:38px; color:#c8cbc5; font-size:14px; }
+    .nav-links a { transition:color .2s; }
+    .nav-links a:hover,.nav-links a:focus-visible { color:var(--acid); }
+    .nav-cta { border:1px solid #555a53; padding:13px 18px; }
+    .menu { display:none; background:none; color:var(--ink); border:1px solid var(--line); padding:10px 12px; font:600 14px Inter; }
+
+    .hero { min-height:calc(100vh - 94px); display:grid; grid-template-columns:1.12fr .88fr; align-items:center; gap:30px; padding:72px 0 84px; position:relative; }
+    .hero-copy { position:relative; z-index:2; }
+    h1,h2,h3 { font-family:'Barlow Condensed',Impact,sans-serif; margin:0; text-transform:uppercase; }
+    h1 { font-size:clamp(74px,8.3vw,142px); line-height:.81; letter-spacing:-.045em; max-width:900px; }
+    h1 em { color:var(--acid); font-style:normal; }
+    .lead { color:#b6bab3; font-size:clamp(18px,1.6vw,25px); line-height:1.55; max-width:560px; margin:38px 0; }
+    .actions { display:flex; gap:14px; flex-wrap:wrap; }
+    .button { min-height:58px; padding:0 25px; display:inline-flex; align-items:center; gap:18px; border:1px solid #555a53; font-weight:600; font-size:15px; transition:.2s ease; }
+    .button.primary { background:var(--acid); border-color:var(--acid); color:#090b08; }
+    .button:hover,.button:focus-visible { transform:translateY(-2px); border-color:var(--acid); outline:none; }
+    .button svg { width:20px; }
+    .graph-wrap { min-height:570px; position:relative; }
+    #threat-graph { position:absolute; inset:-40px -70px -40px -50px; width:calc(100% + 120px); height:calc(100% + 80px); }
+    .graph-caption { position:absolute; right:0; bottom:0; color:var(--muted); font:500 11px/1.5 Inter; letter-spacing:.12em; text-transform:uppercase; }
+
+    .section { padding:120px 0; }
+    .section-head { display:grid; grid-template-columns:1.1fr .9fr; gap:80px; align-items:end; margin-bottom:72px; }
+    .section h2 { font-size:clamp(58px,7vw,110px); line-height:.88; letter-spacing:-.035em; }
+    .section-copy { color:var(--muted); line-height:1.75; font-size:17px; max-width:520px; }
+    .steps { border-top:1px solid var(--line); }
+    .step { display:grid; grid-template-columns:90px .55fr 1fr; gap:32px; align-items:center; min-height:150px; border-bottom:1px solid var(--line); transition:background .25s; }
+    .step:hover { background:#0c0f0b; }
+    .step-index { color:var(--acid); font:600 15px Inter; }
+    .step h3 { font-size:clamp(34px,4vw,58px); letter-spacing:-.02em; }
+    .step p { color:var(--muted); max-width:520px; line-height:1.65; }
+
+    .product { background:#0a0c0a; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .product-stage { display:grid; grid-template-columns:.72fr 1.28fr; min-height:720px; }
+    .product-copy { padding:105px 70px 80px 0; display:flex; flex-direction:column; justify-content:space-between; }
+    .product-copy h2 { font-size:clamp(64px,6vw,102px); line-height:.86; }
+    .stack { color:var(--acid); font:600 12px Inter; letter-spacing:.16em; text-transform:uppercase; }
+    .mockup { border-left:1px solid var(--line); padding:60px 0 60px 60px; display:flex; align-items:center; }
+    .window { width:100%; aspect-ratio:1.3; border:1px solid #343a32; background:#070908; box-shadow:0 30px 80px #0008; overflow:hidden; }
+    .window-bar { height:48px; border-bottom:1px solid var(--line); display:flex; align-items:center; padding:0 18px; justify-content:space-between; color:#777d74; font-size:11px; }
+    .window-bar strong { color:var(--acid); }
+    .app-body { display:grid; grid-template-columns:58px 1fr 31%; height:calc(100% - 48px); }
+    .app-side,.app-panel { border-right:1px solid var(--line); }
+    .app-side { display:flex; flex-direction:column; align-items:center; gap:25px; padding-top:25px; }
+    .app-side i { width:17px; height:17px; border:1px solid #667064; display:block; }
+    .app-side i:nth-child(2) { border-color:var(--acid); transform:rotate(45deg); }
+    .app-canvas { position:relative; overflow:hidden; background-image:radial-gradient(#252a24 1px,transparent 1px); background-size:22px 22px; }
+    .mini-node { position:absolute; width:20px; height:20px; border:1px solid #737a70; border-radius:50%; background:#0b0d0b; }
+    .mini-node.main { width:48px; height:48px; border:2px solid var(--acid); left:45%; top:40%; }
+    .mini-node:nth-child(2){left:18%;top:22%}.mini-node:nth-child(3){left:72%;top:20%}.mini-node:nth-child(4){left:24%;top:70%}.mini-node:nth-child(5){left:75%;top:68%}
+    .mini-line { position:absolute; height:1px; background:#535a51; transform-origin:left center; left:48%; top:45%; width:30%; }
+    .mini-line.a{transform:rotate(-142deg)}.mini-line.b{transform:rotate(-42deg)}.mini-line.c{transform:rotate(137deg)}.mini-line.d{transform:rotate(42deg)}
+    .app-panel { border:0; padding:28px 22px; }
+    .app-panel small { color:var(--acid); text-transform:uppercase; letter-spacing:.12em; }
+    .app-panel h4 { margin:20px 0 8px; font-size:18px; }
+    .data-line { height:8px; background:#252a24; margin:18px 0; }
+    .data-line.short { width:62%; }
+
+    .capabilities { display:grid; grid-template-columns:.9fr 1.1fr; gap:100px; align-items:start; }
+    .capabilities h2 { position:sticky; top:40px; }
+    .cap-list { border-top:1px solid var(--line); }
+    .cap { display:grid; grid-template-columns:70px 1fr; gap:22px; padding:34px 0; border-bottom:1px solid var(--line); align-items:center; font-size:20px; }
+    .cap svg { width:31px; color:var(--acid); }
+
+    .closing { min-height:650px; display:flex; flex-direction:column; justify-content:center; border-top:1px solid var(--line); position:relative; overflow:hidden; }
+    .closing h2 { font-size:clamp(70px,8vw,132px); line-height:.84; max-width:1050px; position:relative; z-index:2; }
+    .closing h2 span { color:var(--acid); }
+    .closing .button { margin-top:48px; align-self:flex-start; position:relative; z-index:2; }
+    .signal { position:absolute; right:-5%; bottom:8%; width:52%; opacity:.32; }
+    footer { border-top:1px solid var(--line); min-height:120px; display:flex; align-items:center; justify-content:space-between; color:#8b9088; font-size:13px; }
+    footer strong { color:var(--acid); letter-spacing:.1em; }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
+    .reveal.visible { opacity:1; transform:none; }
+    .skip { position:absolute; left:-999px; top:0; }
+    .skip:focus { left:10px; top:10px; z-index:99; background:var(--acid); color:#000; padding:12px; }
+
+    @media(max-width:900px){
+      .shell{width:min(calc(100% - 40px),var(--max))}.nav{height:78px}.nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:#070908;border-bottom:1px solid var(--line);padding:25px;flex-direction:column;align-items:flex-start}.nav-links.open{display:flex}.menu{display:block}.hero{grid-template-columns:1fr;padding-top:55px}.graph-wrap{min-height:410px}.section-head,.product-stage,.capabilities{grid-template-columns:1fr;gap:45px}.section{padding:86px 0}.product-copy{padding:80px 0 35px}.mockup{border-left:0;border-top:1px solid var(--line);padding:35px 0 80px}.capabilities h2{position:static}.step{grid-template-columns:55px 1fr;padding:25px 0}.step p{grid-column:2}.app-body{grid-template-columns:44px 1fr}.app-panel{display:none}.closing{min-height:580px}.signal{width:90%}
+    }
+    @media(max-width:540px){h1{font-size:66px}.brand{font-size:28px}.brand-mark{width:38px;height:38px}.graph-wrap{min-height:330px}.button{width:100%;justify-content:center}.window{aspect-ratio:1}.section h2,.product-copy h2{font-size:56px}.closing h2{font-size:64px}footer{align-items:flex-start;justify-content:center;flex-direction:column;gap:10px}.cap{font-size:17px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.button{transition:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="shell nav">
+    <a class="brand" href="#" aria-label="VÊ AÍ! — início"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 20" fill="none"><path d="M2 10s5-8 14-8 14 8 14 8-5 8-14 8S2 10 2 10Z" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="10" r="4" fill="currentColor"/></svg></span>VÊ AÍ!</a>
+    <button class="menu" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav class="nav-links" id="nav-links" aria-label="Navegação principal"><a href="#visao">Visão geral</a><a href="#recursos">Recursos</a><a href="#arquitetura">Arquitetura</a><a class="nav-cta" href="https://github.com/Just1cup/ve-ai">GitHub ↗</a></nav>
+  </header>
+  <main id="conteudo">
+    <section class="shell hero" id="visao">
+      <div class="hero-copy"><h1>Enxergue a ameaça.<br>Conecte os sinais<em>.</em></h1><p class="lead">Transforme indicadores dispersos em relações que fazem sentido.</p><div class="actions"><a class="button primary" href="https://github.com/Just1cup/ve-ai">Explorar no GitHub <span>→</span></a><a class="button" href="#recursos">Ver como funciona <span>↓</span></a></div></div>
+      <div class="graph-wrap" aria-hidden="true"><canvas id="threat-graph"></canvas><div class="graph-caption">IOC graph / correlação em tempo real</div></div>
+    </section>
+    <section class="shell section" id="recursos">
+      <div class="section-head reveal"><h2>Do indicador isolado ao contexto<em style="color:var(--acid);font-style:normal">.</em></h2><p class="section-copy">O VÊ AÍ! organiza dados de diferentes fontes, conecta entidades relacionadas e oferece uma visão navegável para investigações rápidas e objetivas.</p></div>
+      <div class="steps"><article class="step reveal"><span class="step-index">01</span><h3>Normalize</h3><p>Converta indicadores de formatos distintos em um modelo consistente e pronto para análise.</p></article><article class="step reveal"><span class="step-index">02</span><h3>Correlacione</h3><p>Encontre vínculos entre IOCs, fontes e eventos sem perder o contexto de origem.</p></article><article class="step reveal"><span class="step-index">03</span><h3>Investigue</h3><p>Navegue pelo grafo, filtre relações e aprofunde a análise a partir do que realmente importa.</p></article></div>
+    </section>
+    <section class="product" id="arquitetura"><div class="shell product-stage"><div class="product-copy reveal"><h2>Feito para o fluxo real de análise<em style="color:var(--acid);font-style:normal">.</em></h2><p class="section-copy">Uma experiência direta para transformar dados brutos em uma visão investigável, com atualização contínua e persistência confiável.</p><span class="stack">Rust + React + PostgreSQL + WebSocket</span></div><div class="mockup reveal"><div class="window" aria-label="Representação da interface do VÊ AÍ!"><div class="window-bar"><strong>VÊ AÍ!</strong><span>INVESTIGAÇÃO / GRAFO</span><span>● AO VIVO</span></div><div class="app-body"><aside class="app-side"><i></i><i></i><i></i><i></i></aside><div class="app-canvas"><span class="mini-line a"></span><span class="mini-line b"></span><span class="mini-line c"></span><span class="mini-line d"></span><span class="mini-node main"></span><span class="mini-node"></span><span class="mini-node"></span><span class="mini-node"></span><span class="mini-node"></span></div><aside class="app-panel"><small>Indicador selecionado</small><h4>185.199.108.153</h4><div class="data-line"></div><div class="data-line short"></div><div class="data-line"></div><div class="data-line short"></div></aside></div></div></div></div></section>
+    <section class="shell section capabilities"><h2 class="reveal">Menos ruído.<br>Mais relações úteis<em style="color:var(--acid);font-style:normal">.</em></h2><div class="cap-list"><div class="cap reveal"><svg viewBox="0 0 32 32" fill="none"><path d="M7 3h12l6 6v20H7V3Z M19 3v7h6M11 16h10M11 21h10" stroke="currentColor" stroke-width="2"/></svg>Ingestão de JSON</div><div class="cap reveal"><svg viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="17" height="17" stroke="currentColor" stroke-width="2"/><rect x="12" y="12" width="17" height="17" stroke="currentColor" stroke-width="2"/></svg>Deduplicação de IOCs</div><div class="cap reveal"><svg viewBox="0 0 32 32" fill="none"><path d="M27 10A12 12 0 1 0 28 20M27 3v7h-7" stroke="currentColor" stroke-width="2"/></svg>Atualizações em tempo real</div><div class="cap reveal"><svg viewBox="0 0 32 32" fill="none"><path d="m11 7-8 9 8 9M21 7l8 9-8 9M19 3l-6 26" stroke="currentColor" stroke-width="2"/></svg>API REST documentada</div></div></section>
+    <section class="shell closing reveal"><h2>Veja o que seus indicadores estão tentando <span>dizer.</span></h2><a class="button primary" href="https://github.com/Just1cup/ve-ai">Abrir VÊ AÍ! no GitHub <span>→</span></a><svg class="signal" viewBox="0 0 800 280" fill="none" aria-hidden="true"><path d="M0 220 90 180l80 23 85-90 75 44 95-100 85 76 90-50 90 22 110-90" stroke="#d8ff45"/><path d="M0 260 100 245l85-66 90 42 95-76 100 31 75-89 90 70 165-120" stroke="#d8ff45" stroke-dasharray="7 9" opacity=".5"/></svg></section>
+  </main>
+  <footer class="shell"><span><strong>VÊ AÍ!</strong> — inteligência de ameaças com contexto.</span><span>Projeto open source · 2026</span></footer>
+  <script>
+    const menu=document.querySelector('.menu'),nav=document.querySelector('.nav-links');menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')==='true';menu.setAttribute('aria-expanded',String(!open));nav.classList.toggle('open',!open)});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
+    const observer=new IntersectionObserver(entries=>entries.forEach(e=>e.target.classList.toggle('visible',e.isIntersecting)),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    const canvas=document.querySelector('#threat-graph'),ctx=canvas.getContext('2d');let nodes=[];function resize(){const d=Math.min(devicePixelRatio,2),r=canvas.getBoundingClientRect();canvas.width=r.width*d;canvas.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);nodes=Array.from({length:23},(_,i)=>({x:r.width*(.1+Math.random()*.8),y:r.height*(.1+Math.random()*.8),r:i===0?9:2+Math.random()*4,p:Math.random()*6.28}))}function draw(t){const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);nodes.forEach((n,i)=>{n.p+=.004;n.y+=Math.sin(n.p)*.04;nodes.slice(i+1).forEach(m=>{const d=Math.hypot(n.x-m.x,n.y-m.y);if(d<150){ctx.strokeStyle=`rgba(216,255,69,${(1-d/150)*.35})`;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke()}});ctx.fillStyle=i%4===0?'#d8ff45':'#777d74';ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill();if(i%4===0){ctx.strokeStyle='#d8ff45';ctx.beginPath();ctx.arc(n.x,n.y,n.r+6+Math.sin(t/700+i)*2,0,Math.PI*2);ctx.stroke()}});requestAnimationFrame(draw)}resize();addEventListener('resize',resize);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(draw);else draw(0);
+  </script>
+</body>
+</html>
