@@ -1,0 +1,57 @@
+[package]
+name = "ioc-graph-backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+axum = { version = "0.8.9", features = ["json", "macros", "ws"] }
+chrono = { version = "0.4", features = ["clock", "serde"] }
+futures-util = "0.3"
+notify = "8.2"
+regex = "1.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sqlx = { version = "0.9", features = ["chrono", "derive", "json", "macros", "migrate", "postgres", "runtime-tokio", "tls-rustls-ring-webpki", "uuid"] }
+tokio = { version = "1.44", features = ["macros", "rt-multi-thread", "signal", "sync", "time"] }
+tower-http = { version = "0.6", features = ["cors", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+uuid = { version = "1.12", features = ["serde", "v5"] }
+
+[dev-dependencies]
+criterion = { version = "0.7", features = ["async_tokio", "html_reports"] }
+mockall = "0.14"
+tempfile = "3"
+testcontainers = { version = "0.27", features = ["blocking"] }
+testcontainers-modules = { version = "0.15", features = ["postgres"] }
+tokio-test = "0.4"
+tower = { version = "0.5", features = ["util"] }
+
+[[bench]]
+name = "graph_build"
+harness = false
+
+[[bench]]
+name = "parser"
+harness = false
+
+[[bench]]
+name = "correlation"
+harness = false
+
+[[bench]]
+name = "websocket"
+harness = false
+
+[[bench]]
+name = "memory"
+harness = false
+
+[[bench]]
+name = "layout"
+harness = false
+
+[[bench]]
+name = "search"
+harness = false

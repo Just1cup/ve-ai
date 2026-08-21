@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ioc_graph
+      POSTGRES_USER: ioc_graph
+      POSTGRES_PASSWORD: ioc_graph
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ioc_graph -d ioc_graph"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      BIND_ADDR: 0.0.0.0:3000
+      DATABASE_URL: postgres://ioc_graph:ioc_graph@db:5432/ioc_graph
+      DASHBOARD_PATH: /dashboard
+      RUST_LOG: info,ioc_graph_backend=debug,tower_http=info
+    volumes:
+      - ../dashboard:/dashboard:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8088:80"
+
+volumes:
+  postgres-data:
